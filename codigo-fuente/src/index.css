@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-bruma text-tinta font-sans antialiased; }
+  h1, h2, h3 { @apply font-display; }
+  :focus-visible { outline: 2px solid #0E5A47; outline-offset: 2px; }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type='number'] { -moz-appearance: textfield; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 min-h-[44px] text-[15px] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-primary { @apply bg-pino text-white hover:bg-pino-dark; }
+  .btn-accent { @apply bg-etiqueta text-tinta hover:brightness-95; }
+  .btn-secondary { @apply bg-white text-tinta border border-linea hover:bg-bruma; }
+  .btn-danger { @apply bg-ladrillo text-white hover:brightness-90; }
+  .btn-ghost { @apply text-pino hover:bg-pino-soft; }
+  .btn-sm { @apply min-h-[36px] px-3 text-sm; }
+  .input { @apply w-full rounded-lg border border-linea bg-white px-3 min-h-[44px] text-[15px] placeholder:text-tinta-soft/70 focus:border-pino focus:outline-none focus:ring-2 focus:ring-pino/20 disabled:bg-bruma disabled:text-tinta-soft; }
+  textarea.input { @apply py-2 min-h-[88px]; }
+  .card { @apply rounded-xl border border-linea bg-white; }
+  .label { @apply block text-sm font-semibold mb-1; }
+  .chip { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+
+  /* Etiqueta de producto: el código se muestra como las etiquetas de la mercadería */
+  .code-tag {
+    @apply relative inline-flex items-center bg-etiqueta-soft text-etiqueta-dark text-[13px] font-semibold tabular-nums whitespace-nowrap;
+    padding: 2px 8px 2px 16px;
+    clip-path: polygon(0 50%, 8px 0, 100% 0, 100% 100%, 8px 100%);
+    border-radius: 0 4px 4px 0;
+  }
+  .code-tag::before {
+    content: '';
+    position: absolute; left: 7px; top: 50%; width: 5px; height: 5px; margin-top: -2.5px;
+    border-radius: 9999px; background: #fff; box-shadow: inset 0 0 0 1px rgba(122, 86, 0, 0.4);
+  }
+  .code-tag-lg { font-size: 16px; padding: 4px 12px 4px 22px; clip-path: polygon(0 50%, 11px 0, 100% 0, 100% 100%, 11px 100%); }
+  .code-tag-lg::before { left: 10px; width: 6px; height: 6px; margin-top: -3px; }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff !important; }
+  main { padding: 0 !important; max-width: none !important; }
+  .card { border-color: #ccc; }
+}

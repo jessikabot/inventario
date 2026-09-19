@@ -1,0 +1,155 @@
+=====================================================================
+  SISTEMA DE INVENTARIO Y VENTAS  -  Guía paso a paso
+=====================================================================
+
+QUÉ INCLUYE ESTA CARPETA
+  1_crear_base_de_datos.sql   -> se pega UNA vez en Supabase (crea todo)
+  2_hacer_administrador.sql   -> se pega UNA vez en Supabase (te hace administrador)
+  sitio-listo-para-subir/     -> el programa ya armado, listo para Netlify
+  codigo-fuente/              -> el código completo (solo si algún día
+                                 un programador lo necesita)
+
+Necesitas: una cuenta gratis en supabase.com y otra en netlify.com.
+No necesitas instalar nada en tu computadora.
+
+
+=====================================================================
+  PARTE 1 - SUPABASE (la base de datos)
+=====================================================================
+
+PASO 1. Crear el proyecto
+  - Entra a supabase.com, inicia sesión y presiona "New project".
+  - Ponle un nombre (ej.: tienda), elige una contraseña y guárdala en un
+    lugar seguro. Elige la región más cercana (South America).
+  - Espera 1 o 2 minutos hasta que termine de crearse.
+
+PASO 2. Crear todas las tablas (un solo pegado)
+  - En el menú izquierdo entra a "SQL Editor" y presiona "New query".
+  - Abre el archivo 1_crear_base_de_datos.sql con el Bloc de notas,
+    copia TODO su contenido y pégalo en el editor.
+  - Presiona el botón verde "Run".
+  - Debe aparecer "Success". Con eso quedan creados: productos,
+    categorías, ventas, movimientos, usuarios, seguridad y la carpeta
+    de fotos. Puedes ejecutarlo otra vez sin problema si dudas.
+
+  LA CARPETA DE FOTOS (Storage): NO tienes que crear nada. El paso
+  anterior ya creó la carpeta "product-images" (pública, fotos de hasta
+  5 MB). Si quieres verla: menú "Storage".
+
+PASO 3. Crear TU usuario (será el administrador)
+  - En el menú izquierdo entra a "Authentication" y luego a "Users".
+  - Presiona "Add user" y luego "Create new user".
+  - Escribe tu correo y una contraseña.
+  - IMPORTANTE: marca la casilla "Auto Confirm User".
+  - Presiona "Create user".
+
+PASO 4. Convertir ese usuario en administrador
+  - Abre el archivo 2_hacer_administrador.sql con el Bloc de notas.
+  - Cambia CAMBIA-ESTE-CORREO@ejemplo.com por TU correo del paso 3
+    (deja las comillas).
+  - Cópialo todo, ve a "SQL Editor" > "New query", pégalo y presiona "Run".
+  - Abajo debe aparecer una fila con tu correo y la palabra "admin".
+    Si no aparece ninguna fila, el correo no coincide: revísalo.
+
+PASO 5. Copiar las dos llaves de conexión
+  - Entra a "Project Settings" (la rueda de engranaje) y luego a "API"
+    (en algunas versiones está en el botón "Connect" de arriba).
+  - Copia estos dos datos:
+      a) "Project URL"      (parece: https://abcdefgh.supabase.co)
+      b) "Publishable key"  (empieza con sb_publishable_...) o, si tu
+         panel dice así, la "anon public key".
+  - NO uses la clave "secret" ni "service_role". Esa nunca se usa aquí.
+
+
+=====================================================================
+  PARTE 2 - CONECTAR EL PROGRAMA (2 datos)
+=====================================================================
+
+PASO 6.
+  - Abre la carpeta "sitio-listo-para-subir" y abre el archivo
+    "config.js" con el Bloc de notas.
+  - Verás dos líneas. Reemplaza lo que está entre comillas:
+      SUPABASE_URL: "https://abcdefgh.supabase.co",
+      SUPABASE_KEY: "sb_publishable_xxxxxxxxxxxx"
+  - Guarda el archivo (Ctrl + G). Cuida que las comillas y la coma queden.
+
+
+=====================================================================
+  PARTE 3 - NETLIFY (publicar en internet)
+=====================================================================
+
+PASO 7.
+  - Entra a netlify.com e inicia sesión.
+  - Ve a "Sites" y busca la opción "Add new site" > "Deploy manually"
+    (o simplemente arrastra la carpeta a la zona que dice
+    "Drag and drop your site output folder here").
+  - Arrastra la carpeta completa "sitio-listo-para-subir".
+  - Espera unos segundos. Netlify te da un link (algo como
+    https://nombre-random.netlify.app). Ese es tu programa.
+  - Opcional: en "Site configuration" > "Change site name" puedes
+    ponerle un nombre más lindo.
+
+PASO 8. Entrar
+  - Abre el link, escribe el correo y contraseña del paso 3. Listo.
+
+Si algún día cambias las llaves de config.js, vuelve a arrastrar la
+carpeta a Netlify (Deploys > arrastrar de nuevo).
+
+
+=====================================================================
+  PRIMEROS PASOS DENTRO DEL PROGRAMA
+=====================================================================
+
+  1. Categorías: crea tus ~24 categorías (menú "Categorías" > "Nueva").
+     El sistema propone un código de hasta 5 letras (Herramientas ->
+     HERRA). Ese código arma el ID de los productos: HERRA-0001,
+     HERRA-0002... El código no se puede cambiar cuando la categoría ya
+     tiene productos.
+  2. Usuarios: menú "Usuarios" > "Nuevo usuario". Pones nombre, correo,
+     contraseña y rol (Vendedor, Solo consulta o Administrador). La
+     persona ya puede entrar. No necesitas volver a Supabase.
+     Para bloquear a alguien: Editar > quitar "Usuario activo".
+  3. Productos: "Productos" > "Nuevo producto". Se pueden subir varias
+     fotos desde la computadora o el celular (con cámara).
+  4. Ventas: botón "Vender" (celular) o "Nueva venta" (computadora).
+
+Qué puede hacer cada rol
+  Administrador : todo (usuarios, categorías, anular ventas, ajustes).
+  Vendedor      : registrar productos, ingresos y ventas; edita solo los
+                  productos que él mismo creó; ve solo sus ventas.
+  Solo consulta : mira productos, categorías, stock y reporte de stock.
+
+
+=====================================================================
+  RECOMENDACIONES
+=====================================================================
+
+  - En Supabase: Authentication > Sign In / Providers > Email:
+    desactiva "Allow new users to sign up". Así nadie externo puede
+    registrarse; solo tú creas usuarios desde el programa.
+  - Las fotos de productos son públicas: quien tenga el link exacto de
+    una foto puede verla. No subas fotos con datos privados.
+  - El plan gratis de Supabase pausa el proyecto si pasa una semana sin
+    uso. Si pasa, entra a supabase.com y presiona "Restore".
+  - Para no perder datos, de vez en cuando descarga los reportes en
+    Excel (botón "Descargar Excel" en Reportes).
+  - Si olvidas tu contraseña de administrador: Supabase >
+    Authentication > Users > tu usuario > "Send password recovery"
+    o crea otra desde ahí y repite el paso 4.
+
+
+=====================================================================
+  RESUMEN RÁPIDO
+=====================================================================
+
+  SUPABASE
+   1. Crear proyecto.
+   2. SQL Editor: pegar y ejecutar 1_crear_base_de_datos.sql.
+   3. Authentication > Users > Add user (Auto Confirm User).
+   4. SQL Editor: cambiar tu correo en 2_hacer_administrador.sql y ejecutarlo.
+   5. Copiar Project URL y Publishable key (Project Settings > API).
+  CONECTAR
+   6. Pegar esos dos datos en sitio-listo-para-subir/config.js.
+  NETLIFY
+   7. Arrastrar la carpeta sitio-listo-para-subir a Netlify.
+   8. Abrir el link e iniciar sesión con tu correo de administrador.
