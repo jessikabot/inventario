@@ -9,6 +9,6 @@
 //    SUPABASE_KEY: "sb_publishable_xxxxxxxxxxxx",
 // ============================================================
 window.APP_CONFIG = {
-  SUPABASE_URL: "PEGA_AQUI_LA_URL_DEL_PROYECTO",
-  SUPABASE_KEY: "PEGA_AQUI_LA_CLAVE_PUBLICA"
+  SUPABASE_URL: "https://smesxlfhngnfzhaeswsf.supabase.co",
+  SUPABASE_KEY: "sb_publishable_dQhplYiUN2McuYMR3PmyUw_GvfS6epq"
 };
